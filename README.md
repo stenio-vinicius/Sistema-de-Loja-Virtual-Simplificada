@@ -15,100 +15,90 @@
   Contendo tamném, de forma obrigatória, um método de salvamento de dados implementado no software, como um arquivo JSON ou SQLite.
 
 #### ESTRUTURA PLANEJADA DE CLASSES:
-- Classe:
-  - Cliente
-
-- Atributos:
-  - Nome
-  - E-mail
-  - Senha
-  - Idade
-  - Endereço
+- Classe: **Cliente**
+  - Atributos:
+    - Nome
+    - E-mail
+    - Senha
+    - Idade
+    - Endereço
  
-- Métodos:
-  - CadatrarCliente()
-  - AtualizarPefil()
+  - Métodos:
+    - CadatrarCliente()
+    - AtualizarPefil()
 
-- Classe:
-  - Produto
+- Classe: **Produto**
+    - Atributos:
+      - Nome
+      - Categoria
+      - Preço
+      - Tamanho (Se necessário)
+      - Cor
+      - Disponibilidade no Estoque
+ 
+  - Métodos:
+    - CadastrarProduto()
+    - ModificarProduto()
+    - ComprarProduto()
+ 
+- Classe: **Carrinho**
+  - Atributos:
+    - Itens
+    - Quantidade de itens adicionados
+    - Valor total dos itens adicionados no carrinho
 
-- Atributos:
-  - Nome
-  - Tipo
-  - Preço
-  - Tamanho (Se necessário)
-  - Cor
+  - Métodos:
+    - AdicionarItem()
+    - RetirarItem()
+    - CalcularTotal()
  
-- Métodos:
-  - CadastrarProduto()
-  - ModificarProduto()
-  - ComprarProduto()
- 
-- Classe:
-  - Carrinho:
- 
-- Atributos:
-  - Itens
-  - Quantidade de itens adicionados
-  - Valor total dos itens adicionados no carrinho
+- Classe: **Pedidos**
+  - Atributos:
+    - Quantidade
+    - Status
+    - Localização
+    - Número de Protocolo
 
-- Métodos:
-  - AdicionarItem()
-  - RetirarItem()
- 
-- Classe:
-  - Pedidos
- 
-- Atributos:
-  - Quantidade
-  - Status
-  - Localização
-  - Número de Protocolo
+  - Métodos:
+    - ConfirmarPedido()
+    - CancelarPedido()
 
-- Métodos:
-  ConfirmarPedido()
-  CancelarPedido()
+- Classe: **Pagamento**
+  - Atributos:
+    - Valor
+    - Desconto
+    - Status
+    - Forma de Pagamento
 
-- Classe:
-  - Pagamento
-
-- Atributos:
-  - Valor
-  - Desconto
-  - Status
-  - Forma de Pagamento
-
-- Métodos:
-  - PagarPedido()
-  - AplicarCumpom()
-  - ConfirmarEndereço()
+  - Métodos:
+    - PagarPedido()
+    - AplicarCumpom()
+    - ConfirmarEndereço()
  
-- Classe:
-  - Frete
-
-- Atributos:
-  - Valor
-  - Distância
+- Classe: **Frete**
+  - Atributos:
+    - Valor
+    - Distância
+    - Prazo
  
-- Métodos:
-  - CalcularFrete()
+  - Métodos:
+    - CalcularFrete()
+    - PrazoEstimado()
  
-- Classe:
-  - Nota Fiscal
-
-- Atributos:
-  - Nome da Empresa
-  - Cadastro Nacional de Pessoa Jurídica (CNPJ)
-  - Data e Horário da Confirmação do Pedido
-  - Nome do Cliente
-  - Itens do Pedido
-  - Valor Por Item
-  - Valor Total do Pedido
-  - Descontos
-  - Forma de Pagamento
-  - Endereço do Cliente
-  - Transportadora
-  - Número de Protocolo
+- Classe: **Nota Fiscal**
+  - Atributos:
+    - Nome da Empresa
+    - Cadastro Nacional de Pessoa Jurídica (CNPJ)
+    - Data e Horário da Confirmação do Pedido
+    - Nome do Cliente
+    - Itens do Pedido
+    - Valor Por Item
+    - Valor Total do Pedido
+    - Descontos
+    - Forma de Pagamento
+    - Endereço do Cliente
+    - Transportadora
+    - Número de Protocolo
  
-- Métodos:
- - GerarNota()
+  - Métodos:
+     - GerarNota()
