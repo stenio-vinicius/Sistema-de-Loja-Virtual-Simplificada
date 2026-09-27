@@ -33,7 +33,7 @@
       - Categoria
       - Preço
       - Tamanho (Opcional)
-      - Cor (Opcional)
+      - Cor
       - Disponibilidade no Estoque
  
   - Métodos:
@@ -135,7 +135,7 @@ Atributos:
   - Nome: str
   - Categoria: str
   - Preço: float
-  - Tamanho (Se necessário): str
+  - Tamanho (Opcional): str
   - Cor: str
   - Disponibilidade no Estoque: int
 
@@ -228,3 +228,99 @@ Atributos:
 Métodos:
   - GerarRelatorio(top_n: str, ticket_medio: float, data: str, faturamento: float)
 ---------------------------------------------------------------------------------
+## DIAGRAMA DE CLASSES:
+-----------------------
+
+```mermaid
+classDiagram
+    class Cliente {
+        -Nome: Str
+        -E-mail: Str
+        -Senha: Str
+        -Idade: Int
+        -Endereço: Str
+        +CadastrarCliente()
+        +AtualizarPerfil()
+    }
+
+    class Produto {
+        -Nome: Str
+        -Categoria: Str
+        -Preço: Float
+        -Tamanho: Str
+        -Cor: Str
+        -Disponibilidade no Estoque: Int
+        +CadastrarProduto()
+        +ModificarProduto()
+    }
+
+    class Carrinho {
+        -Itens: Str
+        -Quantidade: Int
+        -ValorItem: Float
+        -ValorTotal: Float
+        +AdicionarItem()
+        +RetirarItem()
+        +CalcularTotal()
+    }
+
+    class Pedidos {
+        -Quantidade: Int
+        -Status: Bool
+        -NúmeroProtocolo: Str
+        +ConfirmarPedido()
+        +CancelarPedido()
+    }
+
+    class Pagamento {
+        -Valor: Float
+        -Desconto: Float
+        -Status: Bool
+        -FormaPagamento: Str
+        +PagarPedido()
+        +AplicarCupom()
+        +ConfirmarEndereço()
+    }
+
+    class Frete {
+        -Valor: Float
+        -Distância: Float
+        -Prazo: Int
+        +CalcularFrete()
+        +PrazoEstimado()
+    }
+
+    class NotaFiscal {
+        -NomeEmpresa: Str
+        -CNPJ: Str
+        -DataPedido: Str
+        -HorárioPedido: Str
+        -NomeCliente: Str
+        -ItensPedido: Str
+        -ValorItem: Float
+        -ValorTotal: Float
+        -Descontos: Float
+        -FormaPagamento: Str
+        -EndereçoCliente: Str
+        -Transportadora: Str
+        -NúmeroProtocolo: Str
+        +GerarNota()
+    }
+
+    class RelatórioVendas {
+        -TopN: Str
+        -TicketMédio: Float
+        -Data: Str
+        -FaturamentoTotal: Float
+        +GerarRelatório()
+    }
+
+    Cliente "1" --> "1" Carrinho : possui
+    Cliente "1" --> "0..*" Pedidos : realiza
+    Carrinho "1" --o "0..*" Produto : contém
+    Carrinho "1" --> "0..1" Pedidos : gera
+    Pedidos "1" --* "1" Pagamento : exige
+    Pedidos "1" --* "1" Frete : exige
+    Pedidos "1" --> "1" NotaFiscal : emite
+    RelatórioVendas "1" --> "0..*" Pedidos : consolida
+```
