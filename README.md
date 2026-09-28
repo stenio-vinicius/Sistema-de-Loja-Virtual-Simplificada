@@ -125,9 +125,9 @@ Atributos:
   - Endereço: str
 
 Métodos:
-  - CadatrarCliente(nome: str, email: str, senha: str, idade: int, endereco: str)
-  - AtualizarPefil(nome: str = None, email: str = None, senha: str = None, idade: int = None, endereco: str = None)
--------------------------------------------------------------------------------------------------------------------
+  - CadatrarCliente(nome: str, email: str, senha: str, idade: int, endereco: str): void
+  - AtualizarPefil(nome: str = None, email: str = None, senha: str = None, idade: int = None, endereco: str = None): void
+-------------------------------------------------------------------------------------------------------------------------
 
 ### Produto
 -----------
@@ -140,9 +140,9 @@ Atributos:
   - Disponibilidade no Estoque: int
 
 Métodos:
-  - CadastrarProduto(nome: str, categoria: str, preco: float, tamanho: str [0..1], cor: str [0..1], disponibilidade: int)
-  - ModificarProduto(nome: str = None, categoria: str = None, preco: float = None, tamanho: str [0..1], cor: str [0..1], disponibilidade: int = None)
------------------------------------------------------------------------------------------------------------------------------------------------------
+  - CadastrarProduto(nome: str, categoria: str, preco: float, tamanho: str [0..1], cor: str [0..1], disponibilidade: int): void
+  - ModificarProduto(nome: str = None, categoria: str = None, preco: float = None, tamanho: str [0..1], cor: str [0..1], disponibilidade: int = None): void
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Carrinho
 ------------
@@ -153,10 +153,10 @@ Atributos:
   - Valor total dos itens adicionados no carrinho: float
 
 Métodos:
-  - AdicionarItem(item: str, quantidade: int)
-  - RetirarItem(item: str, quantidade: int)
-  - CalcularTotal(quantidade: int, valor_item: floar, valor_total: float)
--------------------------------------------------------------------------
+  - AdicionarItem(item: str, quantidade: int): void
+  - RetirarItem(item: str, quantidade: int): void
+  - CalcularTotal(quantidade: int, valor_item: floar, valor_total: float): float
+--------------------------------------------------------------------------------
 
 ### Pedidos
 ------------
@@ -166,9 +166,9 @@ Atributos:
   - Número de Protocolo: str
 
 Métodos:
-  - ConfirmarPedido(status: bool)
-  - CancelarPedido(status: bool)
----------------------------------
+  - ConfirmarPedido(status: bool): void
+  - CancelarPedido(status: bool): void
+---------------------------------------
 
 ### Pagamento:
 --------------
@@ -180,9 +180,9 @@ Atributos:
   - Forma de Pagamento: str
 
 Métodos:
-  - AplicarCumpom(desconto: float)
-  - PagarPedido(valor: float, desconto: float, frete: float)
-  ----------------------------------------------------------
+  - AplicarCumpom(desconto: float): float
+  - PagarPedido(valor: float, desconto: float, frete: float): void
+  ----------------------------------------------------------------
 
 ### Frete
 ---------
@@ -192,8 +192,8 @@ Atributos:
   - Prazo de Entrega Estimado: str
 
 Métodos:
-  - CalcularFrete(valor: float, distancia: float)
-  - PrazoEstimado(prazo: str)
+  - CalcularFrete(valor: float, distancia: float): float
+  - PrazoEstimado(prazo: float): float
 ------------------------------------------------------------------------
 
 ### Nota Fiscal
@@ -214,8 +214,8 @@ Atributos:
   - Número de Protocolo: str
 
 Métodos:
-  - GerarNota(nome_empresa: str, cnpj: str, data: str, hora: str, nome_cliente: str, itens_pedido: str, valor_item: float, valor_total: float, descontos: float, forma_pagamento: str, endereco: str, transportadora: str, numero_protocolo: str)
-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+  - GerarNota(nome_empresa: str, cnpj: str, data: str, hora: str, nome_cliente: str, itens_pedido: str, valor_item: float, valor_total: float, descontos: float, forma_pagamento: str, endereco: str, transportadora: str, numero_protocolo: str): void
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Relatório de Vendas
 -----------------------
@@ -226,8 +226,8 @@ Atributos:
   - Faturamento Total: float
 
 Métodos:
-  - GerarRelatorio(top_n: str, ticket_medio: float, data: str, faturamento: float)
----------------------------------------------------------------------------------
+  - GerarRelatorio(top_n: str, ticket_medio: float, data: str, faturamento: float): void
+---------------------------------------------------------------------------------------
 ## DIAGRAMA DE CLASSES:
 -----------------------
 
@@ -239,8 +239,8 @@ classDiagram
         -Senha: Str
         -Idade: Int
         -Endereço: Str
-        +CadastrarCliente()
-        +AtualizarPerfil()
+        +CadastrarCliente(): Void
+        +AtualizarPerfil(): Void 
     }
 
     class Produto {
@@ -250,8 +250,8 @@ classDiagram
         -Tamanho: Str
         -Cor: Str
         -Disponibilidade no Estoque: Int
-        +CadastrarProduto()
-        +ModificarProduto()
+        +CadastrarProduto(): Void
+        +ModificarProduto(): Void
     }
 
     class Carrinho {
@@ -259,17 +259,17 @@ classDiagram
         -Quantidade: Int
         -ValorItem: Float
         -ValorTotal: Float
-        +AdicionarItem()
-        +RetirarItem()
-        +CalcularTotal()
+        +AdicionarItem(): Void
+        +RetirarItem(): Void
+        +CalcularTotal(): Float
     }
 
     class Pedidos {
         -Quantidade: Int
         -Status: Bool
         -NúmeroProtocolo: Str
-        +ConfirmarPedido()
-        +CancelarPedido()
+        +ConfirmarPedido(): Void
+        +CancelarPedido(): Void
     }
 
     class Pagamento {
@@ -277,17 +277,16 @@ classDiagram
         -Desconto: Float
         -Status: Bool
         -FormaPagamento: Str
-        +PagarPedido()
-        +AplicarCupom()
-        +ConfirmarEndereço()
+        +PagarPedido(): Void
+        +AplicarCupom(): Float
     }
 
     class Frete {
         -Valor: Float
         -Distância: Float
         -Prazo: Int
-        +CalcularFrete()
-        +PrazoEstimado()
+        +CalcularFrete(): Float
+        +PrazoEstimado(): Float
     }
 
     class NotaFiscal {
