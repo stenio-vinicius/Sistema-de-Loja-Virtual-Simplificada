@@ -31,6 +31,7 @@
     - Atributos:
       - Nome
       - Categoria
+      - Marca (Opcional)
       - Preço
       - Tamanho (Opcional)
       - Cor
@@ -134,6 +135,7 @@ Métodos:
 Atributos:
   - Nome: str
   - Categoria: str
+  - Marca (Opcional): str
   - Preço: float
   - Tamanho (Opcional): str
   - Cor: str
@@ -246,6 +248,7 @@ classDiagram
     class Produto {
         -Nome: Str
         -Categoria: Str
+        -Marca: Str
         -Preço: Float
         -Tamanho: Str
         -Cor: Str
