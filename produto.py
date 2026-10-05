@@ -32,7 +32,6 @@ class Produto:
           self._estoque = estoque
 
     #Getters
-
     @property
     def nome(self):
       return self._nome
