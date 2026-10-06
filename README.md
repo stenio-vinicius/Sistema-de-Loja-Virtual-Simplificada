@@ -84,25 +84,6 @@
   - Métodos:
     - CalcularFrete()
     - PrazoEstimado()
- 
-- Classe: **Nota Fiscal**
-  - Atributos:
-    - Nome da Empresa
-    - Cadastro Nacional de Pessoa Jurídica (CNPJ)
-    - Data da Confirmação do Pedido
-    - Horário da Confirmação do Pedido
-    - Nome do Cliente
-    - Itens do Pedido
-    - Valor Por Item
-    - Valor Total do Pedido
-    - Descontos
-    - Forma de Pagamento
-    - Endereço do Cliente
-    - Transportadora
-    - Número de Protocolo
- 
-  - Métodos:
-     - GerarNota()
 
 - Classe: **Relatório de Vendas**
   - Atributos:
@@ -184,7 +165,7 @@ Atributos:
 Métodos:
   - AplicarCumpom(desconto: float): float
   - PagarPedido(valor: float, desconto: float, frete: float): void
-  ----------------------------------------------------------------
+------------------------------------------------------------------
 
 ### Frete
 ---------
@@ -198,37 +179,16 @@ Métodos:
   - PrazoEstimado(prazo: float): float
 ------------------------------------------------------------------------
 
-### Nota Fiscal
----------------
-Atributos:
-  - Nome da Empresa: str
-  - Cadastro Nacional de Pessoa Jurídica (CNPJ): str
-  - Data da Confirmação do Pedido: str
-  - Horário da Confirmação do Pedido: str
-  - Nome do Cliente: str
-  - Itens do Pedido: str
-  - Valor Por Item: float
-  - Valor Total do Pedido: float
-  - Descontos: float
-  - Forma de Pagamento: str
-  - Endereço do Cliente: str
-  - Transportadora: str
-  - Número de Protocolo: str
-
-Métodos:
-  - GerarNota(nome_empresa: str, cnpj: str, data: str, hora: str, nome_cliente: str, itens_pedido: str, valor_item: float, valor_total: float, descontos: float, forma_pagamento: str, endereco: str, transportadora: str, numero_protocolo: str): void
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 ### Relatório de Vendas
 -----------------------
 Atributos:
-  - Top N: str
-  - Ticket Médio: float
-  - Data: str
+  - Vendas por Categoria: str
+  - Produto mais Vendido: str
+  - Faturamento por Período: float
   - Faturamento Total: float
 
 Métodos:
-  - GerarRelatorio(top_n: str, ticket_medio: float, data: str, faturamento: float): void
+  - GerarRelatorio(vendas_categoria: str, produto_mais_vendido: str, faturamento_periodo: Float, faturamento_total: float): void
 ---------------------------------------------------------------------------------------
 ## DIAGRAMA DE CLASSES:
 -----------------------
@@ -292,29 +252,12 @@ classDiagram
         +PrazoEstimado(): Float
     }
 
-    class NotaFiscal {
-        -NomeEmpresa: Str
-        -CNPJ: Str
-        -DataPedido: Str
-        -HorárioPedido: Str
-        -NomeCliente: Str
-        -ItensPedido: Str
-        -ValorItem: Float
-        -ValorTotal: Float
-        -Descontos: Float
-        -FormaPagamento: Str
-        -EndereçoCliente: Str
-        -Transportadora: Str
-        -NúmeroProtocolo: Str
-        +GerarNota()
-    }
-
     class RelatórioVendas {
-        -TopN: Str
-        -TicketMédio: Float
-        -Data: Str
+        -VendasCategoria: Str
+        -ProdutoMaisVendido: Str
+        -FaturamentoPeriodo: Float
         -FaturamentoTotal: Float
-        +GerarRelatório()
+        +GerarRelatório(): Void
     }
 
     Cliente "1" --> "1" Carrinho : possui
@@ -323,6 +266,5 @@ classDiagram
     Carrinho "1" --> "0..1" Pedidos : gera
     Pedidos "1" --* "1" Pagamento : exige
     Pedidos "1" --* "1" Frete : exige
-    Pedidos "1" --> "1" NotaFiscal : emite
     RelatórioVendas "1" --> "0..*" Pedidos : consolida
 ```
