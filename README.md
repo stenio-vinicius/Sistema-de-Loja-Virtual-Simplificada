@@ -10,7 +10,6 @@
   Pedidos;
   Pagamentos;
   Cálculo de Frete;
-  Emissão de Nota/Sumário de Compra;
   Relatório de Vendas.
   Contendo também, de forma obrigatória, um método de salvamento de dados implementado no software, como um arquivo JSON ou SQLite.
 
@@ -87,10 +86,10 @@
 
 - Classe: **Relatório de Vendas**
   - Atributos:
-    - Top N
-    - Ticket Médio
-    - Data
-    - Faturamento Total
+    - Vendas por Categoria:
+    - Produto mais Vendido:
+    - Faturamento por Período:
+    - Faturamento Total:
    
   - Métodos:
     - GerarRelatorio()
