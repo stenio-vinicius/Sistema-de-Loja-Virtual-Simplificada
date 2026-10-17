@@ -5,10 +5,29 @@ class Carrinho:
         self._itens = []
 
     def AdicionarItem(self, produto, quantidade):
-        for item in self._itens:
-            if item["produto"] == produto:
-                item["quantidade"] += quantidade
-                return
+    itemExistente = None
+    for item in self._itens:
+        if item["produto"] == produto:
+            itemExistente = item
+            break
+
+    quantidadeNoCarrinho = 0
+    if itemExistente is not None:
+        quantidadeNoCarrinho = itemExistente["quantidade"]
+
+    disponivel = produto.estoque - quantidadeNoCarrinho
+
+    if disponivel <= 0:
+        print(f"Não há mais unidades de '{produto.nome}' disponíveis para adicionar.")
+        return
+
+    if quantidade > disponivel:
+        print(f"Estoque insuficiente de '{produto.nome}'. Foram adicionadas apenas {disponivel} unidade(s).")
+        quantidade = disponivel
+
+    if itemExistente is not None:
+        itemExistente["quantidade"] += quantidade
+    else:
         self._itens.append({"produto": produto, "quantidade": quantidade})
 
     def RetirarItem(self, produto, quantidade):
