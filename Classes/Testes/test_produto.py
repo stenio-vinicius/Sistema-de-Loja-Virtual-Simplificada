@@ -1,6 +1,6 @@
 import pytest
 
-from Classes import produto
+from Classes.produto import Produto
 
 def test_produto_cadastro():
     produto = Produto()

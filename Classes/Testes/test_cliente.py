@@ -1,6 +1,6 @@
 import pytest
 
-from Classes import cliente
+from Classes.cliente import Cliente
 
 def test_cliente_cadastro():
     cliente = Cliente()

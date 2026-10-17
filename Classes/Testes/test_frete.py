@@ -1,6 +1,6 @@
 import pytest
 
-from Classes import frete
+from Classes.frete import Frete
 
 def test_frete_calcular_valor():
     frete = Frete()

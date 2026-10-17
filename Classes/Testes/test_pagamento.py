@@ -1,6 +1,6 @@
 import pytest
 
-from Classes import pagamento
+from Classes.pagamento import Pagamento
 
 @pytest.fixture(autouse=True)
 def limpar_cupons():

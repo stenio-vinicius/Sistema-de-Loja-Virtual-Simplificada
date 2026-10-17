@@ -1,6 +1,6 @@
 import pytest
 
-from Classes import pedidos
+from Classes.pedidos import Pedidos
 
 def test_pedido_confirmar_muda_status_e_gera_protocolo():
     pedido = Pedidos()

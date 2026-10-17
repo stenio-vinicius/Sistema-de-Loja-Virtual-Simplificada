@@ -1,6 +1,6 @@
 import pytest
 
-from Classes.relatorio import Relatorio
+from Classes import relatorio
 from Classes.produto import Produto
 from datetime import datetime
 
