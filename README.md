@@ -3,15 +3,15 @@
 ## DESCRIÇÃO DO PROJETO:
 - Desenvolvimento de um software simples para uma loja virtual com finalidade de obtenção de nota no trabalho da disciplina de PROGRAMAÇÃO ORIENTADA A OBJETOS do 2° semestre do curso de Engenharia de Software da Universidade Federal do Cariri (UFCA).
 
-## OBJETIVOS: 
-- Criação de um software simples funcional para um sistema de administração de uma loja virtual, sendo exigido alguns requisitos, como:
-  Cadastro de Produtos e Clientes;
-  Carrinho;
-  Pedidos;
-  Pagamentos;
-  Cálculo de Frete;
-  Relatório de Vendas.
-  Contendo também, de forma obrigatória, um método de salvamento de dados implementado no software, como um arquivo JSON ou SQLite.
+## OBJETIVOS:
+- Criação de um software simples funcional para um sistema de administração de uma loja virtual, sendo exigidos alguns requisitos, como:
+  - Cadastro de Produtos e Clientes;
+  - Carrinho;
+  - Pedidos;
+  - Pagamentos;
+  - Cálculo de Frete;
+  - Relatório de Vendas.
+- Contendo também, de forma obrigatória, um método de salvamento de dados implementado no software, como um arquivo JSON ou SQLite.
 
 ## ESTRUTURA PLANEJADA DE CLASSES:
 - Classe: **Cliente**
@@ -21,84 +21,110 @@
     - Senha
     - Idade
     - Endereço
- 
+
   - Métodos:
-    - CadatrarCliente()
-    - AtualizarPefil()
+    - CadastrarCliente()
+    - AtualizarPerfil()
 
 - Classe: **Produto**
-    - Atributos:
-      - Nome
-      - Categoria
-      - Marca (Opcional)
-      - Preço
-      - Tamanho (Opcional)
-      - Cor
-      - Disponibilidade no Estoque
- 
+  - Atributos:
+    - Nome
+    - Categoria
+    - Preço
+    - Tamanho (Opcional)
+    - Cor
+    - Estoque (disponibilidade)
+
   - Métodos:
     - CadastrarProduto()
     - ModificarProduto()
- 
+
 - Classe: **Carrinho**
   - Atributos:
-    - Itens
-    - Quantidade de itens adicionados
-    - Valor por item
-    - Valor total dos itens adicionados no carrinho
+    - Itens (lista em que cada item guarda o produto e a quantidade adicionada)
 
   - Métodos:
     - AdicionarItem()
     - RetirarItem()
     - CalcularTotal()
- 
+
 - Classe: **Pedidos**
   - Atributos:
-    - Quantidade
-    - Status
-    - Número de Protocolo
+    - Status (PENDENTE, ENVIADO, ENTREGUE ou CANCELADO)
+    - Número de Protocolo (gerado automaticamente ao confirmar o pedido, também usado como código de rastreio)
+    - Data de Entrega
 
   - Métodos:
     - ConfirmarPedido()
+    - MarcarComoEntregue()
     - CancelarPedido()
+
+  - Regras:
+    - Ao confirmar, o pedido passa de PENDENTE para ENVIADO e recebe o número de protocolo.
+    - Só um pedido ENVIADO pode ser marcado como ENTREGUE, registrando a data de entrega.
+    - Um pedido pode ser cancelado em qualquer estado, exceto depois de ENTREGUE.
 
 - Classe: **Pagamento**
   - Atributos:
     - Valor
-    - Desconto
-    - Status
-    - Forma de Pagamento
+    - Desconto (percentual)
+    - Frete
+    - Forma de Pagamento (PIX, CARTAO_DEBITO, CARTAO_CREDITO ou BOLETO)
+    - Status (PENDENTE ou PAGO)
+    - Cupons válidos (compartilhados por todos os pagamentos)
 
   - Métodos:
+    - CadastrarCupom()
+    - ListarCupons()
+    - AplicarCupom()
     - PagarPedido()
-    - AplicarCumpom()
-    - ConfirmarEndereço()
- 
+    - FormatarMoeda()
+
+  - Regras:
+    - Cada cupom tem um código, um percentual de desconto e um valor mínimo de compra.
+    - O cupom só é aplicado se o valor da compra atingir o valor mínimo do cupom.
+    - Valor total = valor com desconto + frete.
+
 - Classe: **Frete**
   - Atributos:
     - Valor
     - Distância
-    - Prazo
- 
+    - Prazo (em dias)
+
   - Métodos:
     - CalcularFrete()
     - PrazoEstimado()
 
+  - Regras:
+    - Valor do frete: R$ 0,10 por km.
+    - Distância máxima atendida: 3000 km (acima disso não há cálculo de frete nem de prazo).
+    - Prazo estimado por faixa de distância:
+
+      | Distância | Prazo |
+      |---|---|
+      | até 100 km | 2 dias |
+      | até 500 km | 5 dias |
+      | até 1500 km | 8 dias |
+      | até 2000 km | 11 dias |
+      | até 2500 km | 14 dias |
+      | até 3000 km | 17 dias |
+
 - Classe: **Relatório de Vendas**
   - Atributos:
-    - Vendas por Categoria:
-    - Produto mais Vendido:
-    - Faturamento por Período:
-    - Faturamento Total:
-   
+    - Vendas (lista com produto, quantidade, valor total e data de cada venda)
+
   - Métodos:
-    - GerarRelatorio()
-    
+    - RegistrarVenda()
+    - FaturamentoPorPeriodo()
+    - FaturamentoTotal()
+    - VendasPorCategoria()
+    - ProdutoMaisVendido()
+
 ## UML TEXTUAL:
 -----------
 ### Cliente
 -----------
-Atributos: 
+Atributos:
   - Nome: str
   - E-mail: str
   - Senha: str
@@ -106,8 +132,8 @@ Atributos:
   - Endereço: str
 
 Métodos:
-  - CadatrarCliente(nome: str, email: str, senha: str, idade: int, endereco: str): void
-  - AtualizarPefil(nome: str = None, email: str = None, senha: str = None, idade: int = None, endereco: str = None): void
+  - CadastrarCliente(nome: str, email: str, senha: str, idade: int, endereco: str): void
+  - AtualizarPerfil(nome: str = None, email: str = None, senha: str = None, idade: int = None, endereco: str = None): void
 -------------------------------------------------------------------------------------------------------------------------
 
 ### Produto
@@ -115,155 +141,160 @@ Métodos:
 Atributos:
   - Nome: str
   - Categoria: str
-  - Marca (Opcional): str
   - Preço: float
   - Tamanho (Opcional): str
   - Cor: str
-  - Disponibilidade no Estoque: int
+  - Estoque (disponibilidade): int
 
 Métodos:
-  - CadastrarProduto(nome: str, categoria: str, preco: float, tamanho: str [0..1], cor: str [0..1], disponibilidade: int): void
-  - ModificarProduto(nome: str = None, categoria: str = None, preco: float = None, tamanho: str [0..1], cor: str [0..1], disponibilidade: int = None): void
+  - CadastrarProduto(nome: str, categoria: str, preco: float, cor: str, tamanho: str [0..1], estoque: int): void
+  - ModificarProduto(nome: str = None, categoria: str = None, preco: float = None, cor: str = None, tamanho: str = None, estoque: int = None): void
 -----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 ### Carrinho
 ------------
 Atributos:
-  - Itens: str
-  - Quantidade de itens adicionados: int
-  - Valor por item: float
-  - Valor total dos itens adicionados no carrinho: float
+  - Itens: list (cada item: produto + quantidade)
 
 Métodos:
-  - AdicionarItem(item: str, quantidade: int): void
-  - RetirarItem(item: str, quantidade: int): void
-  - CalcularTotal(quantidade: int, valor_item: floar, valor_total: float): float
+  - AdicionarItem(produto: Produto, quantidade: int): void
+  - RetirarItem(produto: Produto, quantidade: int): void
+  - CalcularTotal(): float
 --------------------------------------------------------------------------------
 
 ### Pedidos
 ------------
 Atributos:
-  - Quantidade: int
-  - Status: bool
+  - Status: str
   - Número de Protocolo: str
+  - Data de Entrega: str (DD/MM/AAAA)
 
 Métodos:
-  - ConfirmarPedido(status: bool): void
-  - CancelarPedido(status: bool): void
+  - ConfirmarPedido(): void
+  - MarcarComoEntregue(dataEntrega: str): void
+  - CancelarPedido(): void
 ---------------------------------------
 
-### Pagamento:
+### Pagamento
 --------------
 Atributos:
   - Valor: float
-  - Desconto: float
-  - Valor do Frete: float
-  - Status: bool
+  - Desconto: float (percentual)
+  - Frete: float
   - Forma de Pagamento: str
+  - Status: str
+  - Cupons Válidos: dict (código -> percentual e valor mínimo)
 
 Métodos:
-  - AplicarCumpom(desconto: float): float
-  - PagarPedido(valor: float, desconto: float, frete: float): void
+  - CadastrarCupom(codigo: str, percentual: float, valorMinimo: float): void
+  - ListarCupons(valorCompra: float): void
+  - AplicarCupom(codigo: str, valorCompra: float): void
+  - PagarPedido(valor: float, frete: float, formaPagamento: str): str
+  - FormatarMoeda(valor: float): str
 ------------------------------------------------------------------
 
 ### Frete
 ---------
 Atributos:
   - Valor: float
-  - Distância baseada no endereço no remetente e do destinatário: float
-  - Prazo de Entrega Estimado: str
+  - Distância: float
+  - Prazo: int (dias)
 
 Métodos:
-  - CalcularFrete(valor: float, distancia: float): float
-  - PrazoEstimado(prazo: float): float
+  - CalcularFrete(distancia: float): float | None
+  - PrazoEstimado(distancia: float): int | None
 ------------------------------------------------------------------------
 
 ### Relatório de Vendas
 -----------------------
 Atributos:
-  - Vendas por Categoria: str
-  - Produto mais Vendido: str
-  - Faturamento por Período: float
-  - Faturamento Total: float
+  - Vendas: list (cada venda: produto, quantidade, valorTotal, data)
 
 Métodos:
-  - GerarRelatorio(vendas_categoria: str, produto_mais_vendido: str, faturamento_periodo: Float, faturamento_total: float): void
+  - RegistrarVenda(produto: Produto, quantidade: int, valorTotal: float, data: str): void
+  - FaturamentoPorPeriodo(dataInicio: str, dataFim: str): float
+  - FaturamentoTotal(): float
+  - VendasPorCategoria(): dict
+  - ProdutoMaisVendido(): str | None
 ---------------------------------------------------------------------------------------
+
 ## DIAGRAMA DE CLASSES:
 -----------------------
 
 ```mermaid
 classDiagram
     class Cliente {
-        -Nome: Str
-        -E-mail: Str
-        -Senha: Str
-        -Idade: Int
-        -Endereço: Str
-        +CadastrarCliente(): Void
-        +AtualizarPerfil(): Void 
+        -nome: str
+        -email: str
+        -senha: str
+        -idade: int
+        -endereco: str
+        +CadastrarCliente(nome, email, senha, idade, endereco): void
+        +AtualizarPerfil(nome, email, senha, idade, endereco): void
     }
 
     class Produto {
-        -Nome: Str
-        -Categoria: Str
-        -Marca: Str
-        -Preço: Float
-        -Tamanho: Str
-        -Cor: Str
-        -Disponibilidade no Estoque: Int
-        +CadastrarProduto(): Void
-        +ModificarProduto(): Void
+        -nome: str
+        -categoria: str
+        -preco: float
+        -tamanho: str
+        -cor: str
+        -estoque: int
+        +CadastrarProduto(nome, categoria, preco, cor, tamanho, estoque): void
+        +ModificarProduto(nome, categoria, preco, cor, tamanho, estoque): void
     }
 
     class Carrinho {
-        -Itens: Str
-        -Quantidade: Int
-        -ValorItem: Float
-        -ValorTotal: Float
-        +AdicionarItem(): Void
-        +RetirarItem(): Void
-        +CalcularTotal(): Float
+        -itens: list
+        +AdicionarItem(produto, quantidade): void
+        +RetirarItem(produto, quantidade): void
+        +CalcularTotal(): float
     }
 
     class Pedidos {
-        -Quantidade: Int
-        -Status: Bool
-        -NúmeroProtocolo: Str
-        +ConfirmarPedido(): Void
-        +CancelarPedido(): Void
+        -status: str
+        -numeroProtocolo: str
+        -dataEntrega: str
+        +ConfirmarPedido(): void
+        +MarcarComoEntregue(dataEntrega): void
+        +CancelarPedido(): void
     }
 
     class Pagamento {
-        -Valor: Float
-        -Desconto: Float
-        -Status: Bool
-        -FormaPagamento: Str
-        +PagarPedido(): Void
-        +AplicarCupom(): Float
+        -valor: float
+        -desconto: float
+        -frete: float
+        -formaPagamento: str
+        -status: str
+        +CadastrarCupom(codigo, percentual, valorMinimo): void
+        +ListarCupons(valorCompra): void
+        +AplicarCupom(codigo, valorCompra): void
+        +PagarPedido(valor, frete, formaPagamento): str
+        +FormatarMoeda(valor): str
     }
 
     class Frete {
-        -Valor: Float
-        -Distância: Float
-        -Prazo: Int
-        +CalcularFrete(): Float
-        +PrazoEstimado(): Float
+        -frete: float
+        -distancia: float
+        -prazo: int
+        +CalcularFrete(distancia): float
+        +PrazoEstimado(distancia): int
     }
 
-    class RelatórioVendas {
-        -VendasCategoria: Str
-        -ProdutoMaisVendido: Str
-        -FaturamentoPeriodo: Float
-        -FaturamentoTotal: Float
-        +GerarRelatório(): Void
+    class Relatorio {
+        -vendas: list
+        +RegistrarVenda(produto, quantidade, valorTotal, data): void
+        +FaturamentoPorPeriodo(dataInicio, dataFim): float
+        +FaturamentoTotal(): float
+        +VendasPorCategoria(): dict
+        +ProdutoMaisVendido(): str
     }
 
     Cliente "1" --> "1" Carrinho : possui
     Cliente "1" --> "0..*" Pedidos : realiza
-    Carrinho "1" --o "0..*" Produto : contém
+    Carrinho "1" o-- "0..*" Produto : contém
     Carrinho "1" --> "0..1" Pedidos : gera
-    Pedidos "1" --* "1" Pagamento : exige
-    Pedidos "1" --* "1" Frete : exige
-    RelatórioVendas "1" --> "0..*" Pedidos : consolida
+    Pedidos "1" *-- "1" Pagamento : exige
+    Pedidos "1" *-- "1" Frete : exige
+    Relatorio "1" --> "0..*" Produto : registra vendas de
 ```
