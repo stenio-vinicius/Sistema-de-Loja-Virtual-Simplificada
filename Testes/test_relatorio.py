@@ -1,6 +1,8 @@
 import pytest
 
-from Classes import relatorio
+from Classes.relatorio import Relatorio
+from Classes.produto import Produto
+from datetime import datetime
 
 def test_relatorio_faturamento_total():
     produto = Produto()

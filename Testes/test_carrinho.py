@@ -1,6 +1,7 @@
 import pytest
 
-from Classes import carrinho
+from Classes.carrinho import Carrinho
+from Classes.produto import Produto
 
 def test_carrinho_adicionar_item_calcula_total():
     produto = Produto()

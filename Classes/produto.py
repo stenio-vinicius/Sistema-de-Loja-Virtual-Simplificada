@@ -1,5 +1,5 @@
 class Produto:
-    "Armazena as informações dos produtos, permitindo cadastro e modificações futuras, exibindo dados para o estoque."
+    """Armazena as informações dos produtos, permitindo cadastro e modificações futuras, exibindo dados para o estoque."""
 
     def __init__(self):
       self._nome = None
@@ -10,26 +10,26 @@ class Produto:
       self._estoque = None
 
     def CadastrarProduto(self, nome, categoria, preco, cor, tamanho, estoque):
-        self._nome = nome
-        self._categoria = categoria
-        self._preco = preco
-        self._cor = cor
-        self._tamanho = tamanho
-        self._estoque = estoque
+      self._nome = nome
+      self._categoria = categoria
+      self._preco = preco
+      self._cor = cor
+      self._tamanho = tamanho
+      self._estoque = estoque
 
     def ModificarProduto(self, nome = None, categoria = None, preco = None, cor = None, tamanho = None, estoque = None):
-        if nome is not None:
-          self._nome = nome
-        if nome is not None:
-          self._categoria = categoria
-        if nome is not None:
-          self._preco = preco
-        if nome is not None:
-          self._cor = cor
-        if nome is not None:
-          self._tamanho = tamanho
-        if nome is not None:
-          self._estoque = estoque
+      if nome is not None:
+        self._nome = nome
+      if categoria is not None:
+        self._categoria = categoria
+      if preco is not None:
+        self._preco = preco
+      if cor is not None:
+        self._cor = cor
+      if tamanho is not None:
+        self._tamanho = tamanho
+      if estoque is not None:
+        self._estoque = estoque
 
     #Getters
     @property
