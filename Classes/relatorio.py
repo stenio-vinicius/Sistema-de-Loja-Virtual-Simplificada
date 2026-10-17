@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Relatorio:
     """Mostra um relatório de vendas com algumas informações, como: faturamento por período, faturamento total, vendas por categoria e produto mais vendido."""
 
