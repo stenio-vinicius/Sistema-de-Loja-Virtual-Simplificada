@@ -27,6 +27,9 @@ class Cliente:
         if endereco is not None:
             self._endereco = endereco
 
+    def VerificarSenha(self, senha):
+        return self.__senha is not None and self.__senha == senha
+
     #Getters
     @property
     def nome(self):
@@ -35,6 +38,10 @@ class Cliente:
     @property
     def email(self):
         return self._email
+
+    @property
+    def senha(self):
+        return self.__senha
 
     @property
     def idade(self):

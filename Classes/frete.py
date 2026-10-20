@@ -14,6 +14,7 @@ class Frete:
             self._frete = None
             return self._frete
 
+        self._distancia = distancia
         self._frete = distancia * 0.1
         return self._frete
 
@@ -34,4 +35,16 @@ class Frete:
             print(f"Não foi possível estimar um prazo de entrega. Endereço informado acima de {self.DISTANCIA_MAXIMA_KM} km da distribuidora.")
             self._prazo = None
 
+        return self._prazo
+
+    @property
+    def distancia(self):
+        return self._distancia
+
+    @property
+    def valor(self):
+        return self._frete
+
+    @property
+    def prazo(self):
         return self._prazo

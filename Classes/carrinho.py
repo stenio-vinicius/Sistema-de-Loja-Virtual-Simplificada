@@ -5,11 +5,11 @@ class Carrinho:
         self._itens = []
 
     def AdicionarItem(self, produto, quantidade):
-    itemExistente = None
-    for item in self._itens:
-        if item["produto"] == produto:
-            itemExistente = item
-            break
+        itemExistente = None
+        for item in self._itens:
+            if item["produto"] == produto:
+                itemExistente = item
+                break
 
     quantidadeNoCarrinho = 0
     if itemExistente is not None:
