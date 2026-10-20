@@ -57,3 +57,42 @@ def test_relatorio_produto_mais_vendido():
 def test_relatorio_sem_vendas_produto_mais_vendido_retorna_none():
     relatorio = Relatorio()
     assert relatorio.ProdutoMaisVendido() is None
+
+
+def test_gerar_relatorio_completo():
+    camisa = Produto()
+    camisa.CadastrarProduto("Camisa", "Roupas", 50.00, "Azul", "M", 10)
+
+    caneca = Produto()
+    caneca.CadastrarProduto("Caneca", "Casa", 20.00, "Branca", None, 30)
+
+    relatorio = Relatorio()
+    relatorio.RegistrarVenda(camisa, 4, 200.00, "05/10/2026")
+    relatorio.RegistrarVenda(caneca, 2, 40.00, "20/10/2026")
+
+    dados = relatorio.GerarRelatorio("01/10/2026", "15/10/2026")
+
+    assert dados["quantidadeVendas"] == 2
+    assert dados["faturamentoTotal"] == 240.00
+    assert dados["faturamentoPeriodo"] == 200.00
+    assert dados["vendasPorCategoria"] == {"Roupas": 200.00, "Casa": 40.00}
+    assert dados["produtoMaisVendido"] == "Camisa"
+
+
+def test_gerar_relatorio_sem_periodo_nao_calcula_faturamento_do_periodo():
+    camisa = Produto()
+    camisa.CadastrarProduto("Camisa", "Roupas", 50.00, "Azul", "M", 10)
+
+    relatorio = Relatorio()
+    relatorio.RegistrarVenda(camisa, 1, 50.00, "05/10/2026")
+
+    assert relatorio.GerarRelatorio()["faturamentoPeriodo"] is None
+
+
+def test_gerar_relatorio_sem_vendas():
+    dados = Relatorio().GerarRelatorio()
+
+    assert dados["quantidadeVendas"] == 0
+    assert dados["faturamentoTotal"] == 0
+    assert dados["vendasPorCategoria"] == {}
+    assert dados["produtoMaisVendido"] is None

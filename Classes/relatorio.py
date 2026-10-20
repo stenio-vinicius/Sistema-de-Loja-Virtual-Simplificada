@@ -54,3 +54,17 @@ class Relatorio:
             return None
 
         return max(quantidadePorProduto, key=quantidadePorProduto.get)
+
+    def GerarRelatorio(self, dataInicio = None, dataFim = None):
+        relatorio = {
+            "quantidadeVendas": len(self._vendas),
+            "faturamentoTotal": self.FaturamentoTotal(),
+            "faturamentoPeriodo": None,
+            "vendasPorCategoria": self.VendasPorCategoria(),
+            "produtoMaisVendido": self.ProdutoMaisVendido()
+        }
+
+        if dataInicio is not None and dataFim is not None:
+            relatorio["faturamentoPeriodo"] = self.FaturamentoPorPeriodo(dataInicio, dataFim)
+
+        return relatorio

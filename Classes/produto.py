@@ -19,17 +19,25 @@ class Produto:
 
     def ModificarProduto(self, nome = None, categoria = None, preco = None, cor = None, tamanho = None, estoque = None):
         if nome is not None:
-          self._nome = nome
+            self._nome = nome
         if categoria is not None:
-          self._categoria = categoria
+            self._categoria = categoria
         if preco is not None:
-          self._preco = preco
+            self._preco = preco
         if cor is not None:
-          self._cor = cor
+            self._cor = cor
         if tamanho is not None:
-          self._tamanho = tamanho
+            self._tamanho = tamanho
         if estoque is not None:
-          self._estoque = estoque
+            self._estoque = estoque
+
+    def BaixarEstoque(self, quantidade):
+        if quantidade > self._estoque:
+            print(f"Estoque insuficiente de '{self._nome}'.")
+            return False
+
+        self._estoque -= quantidade
+        return True
 
     #Getters
     @property
