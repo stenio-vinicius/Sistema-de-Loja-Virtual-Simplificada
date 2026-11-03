@@ -52,3 +52,23 @@ def test_frete_acima_do_limite_nao_guarda_a_distancia():
     frete.CalcularFrete(5000)
 
     assert frete.distancia is None
+
+
+# ---------- Isenção (produtos digitais) e restauração ----------
+
+def test_frete_isento_nao_cobra_nada():
+    frete = Frete()
+    frete.Isentar()
+
+    assert frete.valor == 0.0
+    assert frete.prazo == 0
+    assert frete.distancia == 0
+
+
+def test_frete_restaurado_mantem_os_valores():
+    frete = Frete()
+    frete.Restaurar(200, 20.0, 5)
+
+    assert frete.distancia == 200
+    assert frete.valor == 20.0
+    assert frete.prazo == 5
