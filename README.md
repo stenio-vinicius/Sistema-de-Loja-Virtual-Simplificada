@@ -286,7 +286,7 @@ Atributos:
   - Idade: int
   - Endereço: str
   - CPF: str
-M�todos:
+Métodos:
   - CadastrarCliente(nome: str, email: str, senha: str, idade: int, endereco: str, cpf: str = None): void
   - AtualizarPerfil(nome: str = None, email: str = None, senha: str = None, idade: int = None, endereco: str = None, cpf: str = None): void
   - VerificarSenha(senha: str): bool
@@ -303,7 +303,7 @@ Atributos:
   - Cor: str
   - Tamanho (Opcional): str
   - Estoque (disponibilidade): int
-M�todos:
+Métodos:
   - CadastrarProduto(nome: str, categoria: str, preco: float, cor: str, tamanho: str [0..1], estoque: int, sku: str = None): void
   - ModificarProduto(nome: str = None, categoria: str = None, preco: float = None, cor: str = None, tamanho: str = None, estoque: int = None): void
   - BaixarEstoque(quantidade: int): bool
@@ -312,7 +312,7 @@ M�todos:
  
 ### ProdutoDigital (herda de Produto)
 -------------------------------------
-M�todos:
+Métodos:
   - CadastrarProduto(nome: str, categoria: str, preco: float, cor: str = None, tamanho: str = None, estoque: int = 0, sku: str = None): void   (sobrescreve o da classe-mãe; ignora cor e tamanho)
 -----------------------------------------------------------------------------------------------------------------------------------------------------
  
@@ -326,7 +326,7 @@ Atributos:
   - Uso Máximo: int [0..1]
   - Categorias: list
   - Usos: int
-M�todos:
+Métodos:
   - CadastrarCupom(codigo: str, percentual: float, valorMinimo: float = 0, validade: str = None, usoMaximo: int = None, categorias: list = None, usos: int = 0): void
   - Problemas(): list
   - MotivoDeRecusa(itens: list, data: str): str | None
@@ -339,7 +339,7 @@ M�todos:
 ------------
 Atributos:
   - Itens: list (cada item: produto + quantidade)
-M�todos:
+Métodos:
   - AdicionarItem(produto: Produto, quantidade: int): void
   - RetirarItem(produto: Produto, quantidade: int): void
   - CalcularTotal(): float
@@ -362,7 +362,7 @@ Atributos:
   - Data de Pagamento: str [0..1]
   - Data de Entrega: str [0..1]
   - Data de Cancelamento: str [0..1]
-M�todos:
+Métodos:
   - DefinirFrete(distancia: float = None): void
   - AplicarCupom(cupom: Cupom, data: str = None): bool
   - PagarPedido(forma: str, parcelas: int = 1, data: str = None): bool
@@ -380,7 +380,7 @@ Atributos:
   - Frete: float
   - Forma: str (definida pela classe-filha)
   - Status: str
-M�todos:
+Métodos:
   - AplicarDesconto(valorDesconto: float): void
   - CalcularTotal(valor: float, frete: float): float
   - PagarPedido(valor: float, frete: float): str
@@ -391,7 +391,7 @@ M�todos:
 -------------------------------------
 Atributos:
   - Desconto do Pix: int (5, percentual)
-M�todos:
+Métodos:
   - CalcularTotal(valor: float, frete: float): float   (sobrescreve o da classe-mãe)
 -------------------------------------------------------------------------------
  
@@ -406,7 +406,7 @@ Atributos:
   - Parcelas: int
   - Parcelas sem juros: int (3)
   - Juros: int (3, percentual)
-M�todos:
+Métodos:
   - CalcularTotal(valor: float, frete: float): float   (sobrescreve o da classe-mãe)
   - PagarPedido(valor: float, frete: float): str       (sobrescreve o da classe-mãe)
 -----------------------------------------------------------------------------------
@@ -422,7 +422,7 @@ Atributos:
   - Valor: float
   - Distância: float
   - Prazo: int (dias)
-M�todos:
+Métodos:
   - CalcularFrete(distancia: float): float | None
   - PrazoEstimado(distancia: float): int | None
   - Isentar(): void
@@ -433,7 +433,7 @@ M�todos:
 -----------------------
 Atributos:
   - Vendas: list (cada venda: produto, quantidade, valorTotal, data)
-M�todos:
+Métodos:
   - RegistrarVenda(produto: Produto, quantidade: int, valorTotal: float, data: str): void
   - FaturamentoPorPeriodo(dataInicio: str, dataFim: str): float
   - FaturamentoTotal(): float
@@ -446,7 +446,7 @@ M�todos:
 -----------------
 Atributos:
   - Caminho: str
-M�todos:
+Métodos:
   - SalvarProduto(produto: Produto): bool
   - ListarProdutos(): list
   - SalvarCliente(cliente: Cliente): bool
