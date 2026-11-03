@@ -10,38 +10,10 @@ from Classes.pagamento import (
 )
 
 
-@pytest.fixture(autouse=True)
-def limpar_cupons():
-    Pagamento.CUPONS_VALIDOS.clear()
-    yield
-    Pagamento.CUPONS_VALIDOS.clear()
-
-
-# ---------- Classe-mãe: cupons e fluxo geral ----------
+# ---------- Classe-mãe ----------
 
 def test_pagamento_formatar_moeda():
-    pagamento = Pagamento()
-    assert pagamento.FormatarMoeda(150.5) == "150,50"
-
-
-def test_pagamento_aplicar_cupom_valido(capsys):
-    pagamento = Pagamento()
-    pagamento.CadastrarCupom("PROMO10", 10, 150.00)
-
-    pagamento.AplicarCupom("PROMO10", 200.00)
-    capturado = capsys.readouterr()
-
-    assert "Cupom aplicado! 10% de desconto." in capturado.out
-
-
-def test_pagamento_cupom_abaixo_do_minimo_nao_aplica(capsys):
-    pagamento = Pagamento()
-    pagamento.CadastrarCupom("PROMO10", 10, 150.00)
-
-    pagamento.AplicarCupom("PROMO10", 100.00)
-    capturado = capsys.readouterr()
-
-    assert "só é válido para compras acima" in capturado.out
+    assert Pagamento().FormatarMoeda(150.5) == "150,50"
 
 
 def test_pagamento_sem_forma_definida_nao_paga(capsys):
@@ -55,24 +27,41 @@ def test_pagamento_sem_forma_definida_nao_paga(capsys):
     assert "Forma de pagamento não definida" in capturado.out
 
 
-def test_cupons_sao_compartilhados_entre_as_classes_filhas(capsys):
-    PagamentoPix().CadastrarCupom("PROMO10", 10, 150.00)
-
-    PagamentoDebito().AplicarCupom("PROMO10", 200.00)   # outra classe-filha enxerga o mesmo cupom
-    capturado = capsys.readouterr()
-
-    assert "Cupom aplicado! 10% de desconto." in capturado.out
+def test_desconto_comeca_zerado():
+    assert Pagamento().desconto == 0
 
 
-# ---------- Herança ----------
+def test_aplicar_desconto_reduz_o_total():
+    pagamento = PagamentoDebito()
+    pagamento.AplicarDesconto(20.00)
+
+    # 200 - 20 = 180, + 20 de frete = 200
+    assert pagamento.desconto == 20.00
+    assert pagamento.CalcularTotal(200.00, 20.00) == 200.00
+
+
+def test_desconto_negativo_e_ignorado():
+    pagamento = PagamentoDebito()
+    pagamento.AplicarDesconto(-50.00)
+
+    assert pagamento.desconto == 0
+    assert pagamento.CalcularTotal(200.00, 20.00) == 220.00
+
+
+def test_desconto_maior_que_o_valor_nao_deixa_o_total_negativo():
+    pagamento = PagamentoDebito()
+    pagamento.AplicarDesconto(500.00)
+
+    assert pagamento.CalcularTotal(200.00, 20.00) == 20.00   # sobra só o frete, nunca menos que zero
+
+
+# ---------- Herança e polimorfismo ----------
 
 @pytest.mark.parametrize("classe", [PagamentoPix, PagamentoDebito, PagamentoCredito, PagamentoBoleto])
 def test_formas_de_pagamento_herdam_de_pagamento(classe):
     assert issubclass(classe, Pagamento)
     assert isinstance(classe(), Pagamento)
 
-
-# ---------- Polimorfismo: mesma chamada, resultado diferente ----------
 
 @pytest.mark.parametrize("pagamento, totalEsperado", [
     (PagamentoDebito(), 220.00),
@@ -85,17 +74,20 @@ def test_calcular_total_depende_da_forma_de_pagamento(pagamento, totalEsperado):
     assert pagamento.CalcularTotal(200.00, 20.00) == pytest.approx(totalEsperado)
 
 
-# ---------- Pagar pedido ----------
+def test_forma_do_pagamento_vem_da_classe():
+    assert PagamentoPix().forma == "PIX"
+    assert PagamentoBoleto().forma == "BOLETO"
 
-def test_pagar_pedido_com_cupom_no_debito(capsys):
+
+# ---------- Pagar ----------
+
+def test_pagar_pedido_com_desconto_no_debito(capsys):
     pagamento = PagamentoDebito()
-    pagamento.CadastrarCupom("PROMO10", 10, 150.00)
-    pagamento.AplicarCupom("PROMO10", 200.00)
+    pagamento.AplicarDesconto(20.00)
 
     status = pagamento.PagarPedido(valor=200.00, frete=20.00)
     capturado = capsys.readouterr()
 
-    # 200 - 10% = 180, + 20 de frete = 200
     assert status == "PAGO"
     assert pagamento.status == "PAGO"
     assert "Valor total a pagar: R$ 200,00" in capturado.out
@@ -103,9 +95,7 @@ def test_pagar_pedido_com_cupom_no_debito(capsys):
 
 
 def test_pagar_pedido_com_pix_aplica_desconto(capsys):
-    pagamento = PagamentoPix()
-
-    pagamento.PagarPedido(valor=200.00, frete=20.00)
+    PagamentoPix().PagarPedido(valor=200.00, frete=20.00)
     capturado = capsys.readouterr()
 
     assert "Valor total a pagar: R$ 209,00" in capturado.out
@@ -113,9 +103,7 @@ def test_pagar_pedido_com_pix_aplica_desconto(capsys):
 
 
 def test_pagar_pedido_no_credito_mostra_o_parcelamento(capsys):
-    pagamento = PagamentoCredito(4)
-
-    pagamento.PagarPedido(valor=200.00, frete=20.00)
+    PagamentoCredito(4).PagarPedido(valor=200.00, frete=20.00)
     capturado = capsys.readouterr()
 
     assert "Valor total a pagar: R$ 226,60" in capturado.out
@@ -128,11 +116,6 @@ def test_credito_com_parcelas_invalidas_usa_uma_parcela(capsys):
 
     assert pagamento.parcelas == 1
     assert "Número de parcelas inválido" in capturado.out
-
-
-def test_forma_do_pagamento_vem_da_classe():
-    assert PagamentoPix().forma == "PIX"
-    assert PagamentoBoleto().forma == "BOLETO"
 
 
 # ---------- CriarPagamento ----------
@@ -149,9 +132,7 @@ def test_criar_pagamento_escolhe_a_classe_certa(forma, classeEsperada):
 
 
 def test_criar_pagamento_credito_recebe_as_parcelas():
-    pagamento = CriarPagamento("CARTAO_CREDITO", parcelas=6)
-
-    assert pagamento.parcelas == 6
+    assert CriarPagamento("CARTAO_CREDITO", parcelas=6).parcelas == 6
 
 
 def test_criar_pagamento_com_forma_invalida_retorna_none(capsys):
@@ -160,16 +141,3 @@ def test_criar_pagamento_com_forma_invalida_retorna_none(capsys):
 
     assert pagamento is None
     assert "Forma de pagamento inválida: DINHEIRO" in capturado.out
-
-
-# ---------- Getter do desconto ----------
-
-def test_desconto_comeca_zerado_e_muda_com_o_cupom():
-    pagamento = PagamentoPix()
-    pagamento.CadastrarCupom("PROMO10", 10, 150.00)
-
-    assert pagamento.desconto == 0
-
-    pagamento.AplicarCupom("PROMO10", 200.00)
-
-    assert pagamento.desconto == 10
