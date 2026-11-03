@@ -45,6 +45,16 @@ class Carrinho:
             total += item["produto"].preco * item["quantidade"]
         return total
 
+    def RestaurarItem(self, produto, quantidade):
+        self._itens.append({"produto": produto, "quantidade": quantidade})
+
+    def PossuiProdutoFisico(self):
+        for item in self._itens:
+            if not item["produto"].digital:
+                return True
+
+        return False
+
     @property
     def itens(self):
         return self._itens
