@@ -37,6 +37,16 @@ class Frete:
 
         return self._prazo
 
+    def Isentar(self):
+        self._distancia = 0
+        self._frete = 0.0
+        self._prazo = 0
+
+    def Restaurar(self, distancia, valor, prazo):
+        self._distancia = distancia
+        self._frete = valor
+        self._prazo = prazo
+
     @property
     def distancia(self):
         return self._distancia
