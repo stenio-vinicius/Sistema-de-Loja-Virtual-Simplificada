@@ -44,16 +44,22 @@ class Relatorio:
 
     def ProdutoMaisVendido(self):
         quantidadePorProduto = {}
+        nomes = {}
+
         for venda in self._vendas:
-            nome = venda["produto"].nome
-            if nome not in quantidadePorProduto:
-                quantidadePorProduto[nome] = 0
-            quantidadePorProduto[nome] += venda["quantidade"]
+            produto = venda["produto"]
+            chave = produto.sku if produto.sku is not None else produto.nome
+
+            nomes[chave] = produto.nome
+            if chave not in quantidadePorProduto:
+                quantidadePorProduto[chave] = 0
+            quantidadePorProduto[chave] += venda["quantidade"]
 
         if not quantidadePorProduto:
             return None
 
-        return max(quantidadePorProduto, key=quantidadePorProduto.get)
+        maisVendido = max(quantidadePorProduto, key = quantidadePorProduto.get)
+        return nomes[maisVendido]
 
     def GerarRelatorio(self, dataInicio = None, dataFim = None):
         relatorio = {
