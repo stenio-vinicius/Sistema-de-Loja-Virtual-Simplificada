@@ -1,7 +1,9 @@
-class Pagamento:
-    """Administra informações já inseridas, aplica cupom de desconto (se disponível), soma o valor do frete e retorna o estado do pagamento (PENDENTE ou PAGO). É a classe-mãe das formas de pagamento: Pix, débito, crédito e boleto herdam daqui e definem a sua própria regra de valor."""
+from Classes.formatacao import FormatarMoeda
 
-    CUPONS_VALIDOS = {}
+
+class Pagamento:
+    """Calcula e conclui o pagamento de um pedido: aplica o desconto do cupom, soma o valor do frete e retorna o estado do pagamento (PENDENTE ou PAGO). É a classe-mãe das formas de pagamento: Pix, débito, crédito e boleto herdam daqui e definem a sua própria regra de valor."""
+
     FORMA = None
 
     def __init__(self):
@@ -11,40 +13,20 @@ class Pagamento:
         self._status = "PENDENTE"
 
     def FormatarMoeda(self, valor):
-        return f"{valor:.2f}".replace(".", ",")
+        return FormatarMoeda(valor)
 
-    def CadastrarCupom(self, codigo, percentual, valorMinimo):
-        self.CUPONS_VALIDOS[codigo] = {
-            "percentual": percentual,
-            "valorMinimo": valorMinimo
-        }
+    def AplicarDesconto(self, valorDesconto):
+        if valorDesconto < 0:
+            valorDesconto = 0
 
-    def ListarCupons(self, valorCompra):
-        algumCupomValido = False
-
-        for codigo, regras in self.CUPONS_VALIDOS.items():
-            if valorCompra >= regras["valorMinimo"]:
-                print(f"{codigo}: {regras['percentual']:g}% (válido para compras acima de R$ {self.FormatarMoeda(regras['valorMinimo'])})")
-                algumCupomValido = True
-
-        if not algumCupomValido:
-            print("Nenhum cupom disponível para o valor da sua compra.")
-
-    def AplicarCupom(self, codigo, valorCompra):
-        if codigo not in self.CUPONS_VALIDOS:
-            print("Cupom de desconto indisponível!")
-            return
-
-        regras = self.CUPONS_VALIDOS[codigo]
-        if valorCompra < regras["valorMinimo"]:
-            print(f"Esse cupom só é válido para compras acima de R$ {self.FormatarMoeda(regras['valorMinimo'])}")
-            return
-
-        self._desconto = regras["percentual"]
-        print(f"Cupom aplicado! {self._desconto:g}% de desconto.")
+        self._desconto = valorDesconto
 
     def CalcularTotal(self, valor, frete):
-        valor_com_desconto = valor * (1 - self._desconto / 100)
+        valor_com_desconto = valor - self._desconto
+
+        if valor_com_desconto < 0:
+            valor_com_desconto = 0
+
         return valor_com_desconto + frete
 
     def PagarPedido(self, valor, frete):
