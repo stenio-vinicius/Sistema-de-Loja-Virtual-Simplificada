@@ -1,7 +1,8 @@
 class Produto:
-    """Armazena as informações dos produtos, permitindo cadastro e modificações futuras, exibindo dados para o estoque."""
+    """Armazena as informações dos produtos, permitindo cadastro e modificações futuras, exibindo dados para o estoque. Cada produto é identificado por um SKU único."""
 
     def __init__(self):
+        self._sku = None
         self._nome = None
         self._categoria = None
         self._preco = None
@@ -9,7 +10,8 @@ class Produto:
         self._tamanho = None
         self._estoque = None
 
-    def CadastrarProduto(self, nome, categoria, preco, cor, tamanho, estoque):
+    def CadastrarProduto(self, nome, categoria, preco, cor, tamanho, estoque, sku = None):
+        self._sku = sku
         self._nome = nome
         self._categoria = categoria
         self._preco = preco
@@ -39,7 +41,14 @@ class Produto:
         self._estoque -= quantidade
         return True
 
+    def EstornarEstoque(self, quantidade):
+        self._estoque += quantidade
+
     #Getters
+    @property
+    def sku(self):
+        return self._sku
+
     @property
     def nome(self):
         return self._nome
@@ -63,3 +72,18 @@ class Produto:
     @property
     def estoque(self):
         return self._estoque
+
+    @property
+    def digital(self):
+        return False
+
+
+class ProdutoDigital(Produto):
+    """Produto digital: não tem cor nem tamanho, não é enviado e, por isso, não soma frete ao pedido."""
+
+    def CadastrarProduto(self, nome, categoria, preco, cor = None, tamanho = None, estoque = 0, sku = None):
+        super().CadastrarProduto(nome, categoria, preco, None, None, estoque, sku)
+
+    @property
+    def digital(self):
+        return True
