@@ -96,3 +96,22 @@ def test_gerar_relatorio_sem_vendas():
     assert dados["faturamentoTotal"] == 0
     assert dados["vendasPorCategoria"] == {}
     assert dados["produtoMaisVendido"] is None
+
+
+def test_produto_mais_vendido_agrupa_pelo_sku_e_nao_pelo_nome():
+    camisaM = Produto()
+    camisaM.CadastrarProduto("Camisa", "Roupas", 50.00, "Azul", "M", 10, "CAM-M")
+
+    camisaG = Produto()
+    camisaG.CadastrarProduto("Camisa", "Roupas", 50.00, "Azul", "G", 10, "CAM-G")
+
+    caneca = Produto()
+    caneca.CadastrarProduto("Caneca", "Casa", 20.00, "Branca", None, 30, "CAN-001")
+
+    relatorio = Relatorio()
+    relatorio.RegistrarVenda(camisaM, 4, 200.00, "05/10/2026")
+    relatorio.RegistrarVenda(camisaG, 3, 150.00, "05/10/2026")
+    relatorio.RegistrarVenda(caneca, 6, 120.00, "05/10/2026")
+
+    # por nome, "Camisa" somaria 7 e ganharia; por SKU, a caneca (6) vence cada camisa (4 e 3)
+    assert relatorio.ProdutoMaisVendido() == "Caneca"
