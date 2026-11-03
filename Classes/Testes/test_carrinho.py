@@ -94,3 +94,45 @@ def test_carrinho_aceita_exatamente_o_estoque_disponivel(capsys):
 
     assert carrinho.itens[0]["quantidade"] == 10
     assert capturado.out == ""
+
+# ---------- Produtos digitais e restauração ----------
+
+from Classes.produto import ProdutoDigital
+
+
+def criar_ebook():
+    ebook = ProdutoDigital()
+    ebook.CadastrarProduto("E-book", "Livros", 50.00, estoque=100, sku="EBK-001")
+    return ebook
+
+
+def test_carrinho_so_com_produtos_digitais_nao_tem_produto_fisico():
+    carrinho = Carrinho()
+    carrinho.AdicionarItem(criar_ebook(), 2)
+
+    assert carrinho.PossuiProdutoFisico() is False
+
+
+def test_carrinho_com_produto_fisico():
+    camisa = Produto()
+    camisa.CadastrarProduto("Camisa", "Roupas", 100.00, "Azul", "M", 10, "CAM-001")
+
+    carrinho = Carrinho()
+    carrinho.AdicionarItem(criar_ebook(), 1)
+    carrinho.AdicionarItem(camisa, 1)
+
+    assert carrinho.PossuiProdutoFisico() is True
+
+
+def test_carrinho_vazio_nao_tem_produto_fisico():
+    assert Carrinho().PossuiProdutoFisico() is False
+
+
+def test_restaurar_item_nao_limita_pelo_estoque():
+    camisa = Produto()
+    camisa.CadastrarProduto("Camisa", "Roupas", 100.00, "Azul", "M", 10, "CAM-001")
+
+    carrinho = Carrinho()
+    carrinho.RestaurarItem(camisa, 15)
+
+    assert carrinho.itens[0]["quantidade"] == 15
